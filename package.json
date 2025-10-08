@@ -1,7 +1,7 @@
 {
-  "name": "@klinecharts/pro",
+  "name": "@crypticorn-ai/klinecharts-pro",
   "version": "0.1.1",
-  "description": "Financial chart built out of the box based on KLineChart.",
+  "description": "Financial chart built out of the box based on KLineChart (Custom build for Crypticorn AI).",
   "type": "module",
   "main": "./dist/klinecharts-pro.umd.js",
   "module": "./dist/klinecharts-pro.js",
@@ -11,9 +11,12 @@
     "README.md",
     "dist/"
   ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/klinecharts/pro"
+    "url": "https://github.com/crypticorn-ai/klinecharts-pro"
   },
   "keywords": [
     "klinecharts",
@@ -28,7 +31,7 @@
   "license": "Apache-2.0",
   "private": false,
   "scripts": {
-    "build-core": "tsc && vite build",
+    "build-core": "tsc --skipLibCheck && vite build",
     "build-dts": "dts-bundle-generator --no-banner true --umd-module-name klinechartspro -o dist/index.d.ts src/index.ts",
     "build": "npm run build-core && npm run build-dts",
     "docs:dev": "vitepress dev docs",
@@ -52,7 +55,7 @@
     "gh-pages": "^5.0.0",
     "less": "^4.1.3",
     "less-loader": "^11.1.0",
-    "typescript": "^4.9.5",
+    "typescript": "^5.9.2",
     "vite": "^4.1.1",
     "vite-plugin-solid": "^2.6.1",
     "vitepress": "^1.0.0-alpha.75",

@@ -51,19 +51,31 @@ function createIndicator (widget: Nullable<Chart>, indicatorName: string, isStac
     // @ts-expect-error
     createTooltipDataSource: ({ indicator, defaultStyles }) => {
       const icons = []
+      // Skip settings icon for Predictions indicator (it has no configurable params)
+      const showSettings = indicatorName !== 'Predictions'
+      
       if (indicator.visible) {
         icons.push(defaultStyles.tooltip.icons[1])
-        icons.push(defaultStyles.tooltip.icons[2])
+        if (showSettings) {
+          icons.push(defaultStyles.tooltip.icons[2])
+        }
         icons.push(defaultStyles.tooltip.icons[3])
       } else {
         icons.push(defaultStyles.tooltip.icons[0])
-        icons.push(defaultStyles.tooltip.icons[2])
+        if (showSettings) {
+          icons.push(defaultStyles.tooltip.icons[2])
+        }
         icons.push(defaultStyles.tooltip.icons[3])
       }
       return { icons }
     }
   }, isStack, paneOptions) ?? null
 }
+
+// Export instance getter to allow parent components to access the chart instance
+let _widgetInstance: Nullable<Chart> = null
+
+export const instanceapi = (): Nullable<Chart> => _widgetInstance
 
 const ChartProComponent: Component<ChartProComponentProps> = props => {
   let widgetRef: HTMLDivElement | undefined = undefined
@@ -114,7 +126,7 @@ const ChartProComponent: Component<ChartProComponentProps> = props => {
     getSymbol: () => symbol(),
     setPeriod,
     getPeriod: () => period(),
-    getInstanceApi: () => widget
+    getInstanceApi: () => instanceapi()
   })
 
   const documentResize = () => {
@@ -211,6 +223,9 @@ const ChartProComponent: Component<ChartProComponentProps> = props => {
         }
       }
     })
+    
+    // Store the widget instance for external access
+    _widgetInstance = widget
 
     if (widget) {
       const watermarkContainer = widget.getDom('candle_pane', DomPosition.Main)
